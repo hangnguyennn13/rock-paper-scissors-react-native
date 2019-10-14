@@ -73,6 +73,7 @@ export default class App extends React.Component {
         <Text style={{fontSize: 20,color: this.state.color}}>{this.state.result}</Text>
         <View style={styles.choicesContainer}>
           <ChoiceDescription player="You" choice = {this.state.userChoice}/>
+          <Text>vs</Text>
           <ChoiceDescription player="Comp" choice = {this.state.compChoice}/>
         </View>
         <View style={styles.buttonContainer}>
