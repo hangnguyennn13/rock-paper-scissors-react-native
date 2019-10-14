@@ -24,11 +24,11 @@ export default class App extends React.Component {
       gamePrompt: 'Fire!',
       userChoice: CHOICES[0],
       compChoice: CHOICES[0],
-      result: "Start!"
+      result: "Start!",
+      color: 'blue',
     }
   }
   onPress = userChoice => {
-    console.log('userChoice', userChoice);
     let indexOfUserChoice = 0;
     let indexOfCompChoice = Math.round(Math.random() * (2-0));
     for (i=0;i<3;i+=1){
@@ -40,31 +40,37 @@ export default class App extends React.Component {
     // let resultOfGame = this.getRoundOutcome();
     this.setState({userChoice:CHOICES[indexOfUserChoice],compChoice:CHOICES[indexOfCompChoice]},()=>{
       let result = this.getRoundOutcome();
-      this.setState({result:result});
+      let color;
+      if (result==='Victory!') color = 'green';
+      else if ( result==='Defeat!') color = 'red';
+      else color = 'black';
+      this.setState({result:result,color:color});
     })
   }
   getRoundOutcome = () => {
     // const computerChoice = randomComputerChoice().name;
     let result;
+    let color;
+    if (this.state.userChoice.name === 'rock') {
+      result = this.state.compChoice.name === 'scissors' ? 'Victory!' : 'Defeat!';
+    }
+    if (this.state.userChoice.name === 'paper') {
+      result = this.state.compChoice.name === 'rock' ? 'Victory!' : 'Defeat!';
+    }
+    if (this.state.userChoice.name === 'scissors') {
+      result = this.state.compChoice.name === 'paper' ? 'Victory!' : 'Defeat!';
+    }
   
-    if (this.userChoice === 'rock') {
-      result = this.compChoice === 'scissors' ? 'Victory!' : 'Defeat!';
-    }
-    if (this.userChoice === 'paper') {
-      result = this.compChoice === 'rock' ? 'Victory!' : 'Defeat!';
-    }
-    if (this.userChoice === 'scissors') {
-      result = this.compChoice === 'paper' ? 'Victory!' : 'Defeat!';
-    }
-  
-    if (this.userChoice === this.compChoice) result = 'Tie game!';
+    if (this.state.userChoice.name === this.state.compChoice.name)
+    { result = 'Tie game!';}
     // this.setState({result:result});
+    // console.log(result)
     return result;
   };
   render() {
      return (
        <View style={styles.container}>
-        <Text>{this.state.result}</Text>
+        <Text style={{fontSize: 20,color: this.state.color}}>{this.state.result}</Text>
         <View style={styles.choicesContainer}>
           <ChoiceDescription player="You" choice = {this.state.userChoice}/>
           <ChoiceDescription player="Comp" choice = {this.state.compChoice}/>
